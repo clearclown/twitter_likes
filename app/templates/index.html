@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Twitter Likes Visualization</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f8fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #1da1f2;
+        }
+        form {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: 300px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #1da1f2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0d95e8;
+        }
+        .tweet {
+            background-color: white;
+            border: 1px solid #e1e8ed;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .tweet p {
+            margin: 0;
+        }
+        .tweet a {
+            color: #1da1f2;
+            text-decoration: none;
+        }
+        .tweet a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Twitter Likes Visualization</h1>
+        <form id="userForm">
+            <input type="text" id="screen_name" name="screen_name" placeholder="Enter Twitter Screen Name" required>
+            <button type="submit">Get Likes</button>
+        </form>
+        <div id="tweets"></div>
+    </div>
+
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    <script>
+        document.getElementById('userForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const screenName = document.getElementById('screen_name').value;
+            fetch('/likes/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ screen_name: screenName })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const tweetsDiv = document.getElementById('tweets');
+                tweetsDiv.innerHTML = '';
+                data.forEach(tweet => {
+                    const tweetDiv = document.createElement('div');
+                    tweetDiv.className = 'tweet';
+                    tweetDiv.innerHTML = `
+                        <blockquote class="twitter-tweet">
+                            <p lang="en" dir="ltr">${tweet.text}</p>
+                            &mdash; ${tweet.user.name} (@${tweet.user.screen_name}) <a href="https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}"> ${new Date(tweet.created_at).toLocaleString()}</a>
+                        </blockquote>
+                    `;
+                    tweetsDiv.appendChild(tweetDiv);
+                });
+                twttr.widgets.load();
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
