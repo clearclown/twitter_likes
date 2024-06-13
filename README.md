@@ -16,7 +16,14 @@ cd twitter_likes
 Create a `.env` file to store your secret keys. This is like your very own vault of secrets, but instead of housing Tesla’s autopilot code, it’s just your Twitter API keys.
 
 Create a file named `.env` and add the following lines with your own keys:
+### Retrieving New Tokens and Cookies
 
+1. Log in to X (formerly Twitter) and open Developer Tools (F12 key).
+2. Select the Network tab and monitor API requests.
+3. From the request headers, obtain the latest `auth_token` and `ct0`.
+4. Re-run the commands with the updated tokens and cookies.
+
+Simple as that!
 ```env
 BEARER_TOKEN=your_bearer_token
 AUTH_TOKEN=your_auth_token
