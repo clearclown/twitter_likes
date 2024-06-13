@@ -7,7 +7,7 @@ Welcome to the future of Twitter likes visualization! Follow these steps to clon
 First, you need to clone the repository from GitHub. Think of it like SpaceX cloning the Falcon 9... but way easier and less expensive.
 
 ```bash
-git clone [https://github.com/your-username/twitter-likes-visualization.git](https://github.com/clearclown/twitter_likes.git)
+git clone https://github.com/clearclown/twitter_likes.git
 cd twitter_likes
 ```
 
